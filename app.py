@@ -16,7 +16,6 @@ from models import Result
 
 
 polls = {}
-hasil = []
 
 
 
@@ -27,10 +26,13 @@ class PollSimple(Resource):
     def post (self, poll_id):
         data = request.get_json(force=True)
         data = json.dumps(data)
-        hasil.append(data)
-        polls[poll_id] = hasil
+        polls[poll_id] = data
         print(polls)
+        hasil_lengkap = Result(polls)
+        db.session.add(hasil_lengkap)
+        db.session.commit()
         return {poll_id: data}
+
 
 api.add_resource(PollSimple, '/<string:poll_id>')
 
